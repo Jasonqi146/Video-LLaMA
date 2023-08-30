@@ -39,6 +39,8 @@ def parse_args():
         "change to --cfg-options instead.",
     )
     args = parser.parse_args()
+    print("args:")
+    print(args)
     return args
 
 
@@ -237,12 +239,12 @@ with gr.Blocks() as demo:
         ], inputs=[video, text_input])
         
     gr.Markdown(cite_markdown)
-    upload_button.click(upload_imgorvideo, [video, image, text_input, chat_state,chatbot,audio], [video, image, text_input, upload_button, chat_state, img_list,chatbot])
+    upload_button.click(upload_imgorvideo, [video, image, text_input, chat_state,chatbot,audio], [video, image, text_input, upload_button, chat_state, img_list,chatbot], api_name="upload")
     
-    text_input.submit(gradio_ask, [text_input, chatbot, chat_state], [text_input, chatbot, chat_state]).then(
+    text_input.submit(gradio_ask, [text_input, chatbot, chat_state], [text_input, chatbot, chat_state], api_name="ask").then(
         gradio_answer, [chatbot, chat_state, img_list, num_beams, temperature], [chatbot, chat_state, img_list]
     )
-    clear.click(gradio_reset, [chat_state, img_list], [chatbot, video, image, text_input, upload_button, chat_state, img_list], queue=False)
+    clear.click(gradio_reset, [chat_state, img_list], [chatbot, video, image, text_input, upload_button, chat_state, img_list], queue=False, api_name="reset")
     
 demo.launch(share=False, enable_queue=True)
 
